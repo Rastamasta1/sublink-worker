@@ -11,12 +11,26 @@ export class SurgeConfigBuilder extends BaseConfigBuilder {
         this.selectedRules = selectedRules;
         this.customRules = customRules;
         this.subscriptionUrl = null;
+        this.updateInterval = 43200;
         this.countryGroupNames = [];
         this.manualGroupName = null;
     }
 
     setSubscriptionUrl(url) {
         this.subscriptionUrl = url;
+        return this;
+    }
+
+    /**
+     * Set the managed-config update interval (seconds).
+     * Accepts raw string/number input; only a positive integer is applied,
+     * otherwise the default (43200) is left untouched.
+     */
+    setUpdateInterval(value) {
+        const n = Number(value);
+        if (Number.isInteger(n) && n > 0) {
+            this.updateInterval = n;
+        }
         return this;
     }
 
@@ -377,7 +391,7 @@ export class SurgeConfigBuilder extends BaseConfigBuilder {
         let finalConfig = [];
 
         if (this.subscriptionUrl) {
-            finalConfig.push(`#!MANAGED-CONFIG ${this.subscriptionUrl} interval=43200 strict=false`);
+            finalConfig.push(`#!MANAGED-CONFIG ${this.subscriptionUrl} interval=${this.updateInterval} strict=false`);
             finalConfig.push('');  // 添加一个空行
         }
 
