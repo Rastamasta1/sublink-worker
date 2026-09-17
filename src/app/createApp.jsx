@@ -205,6 +205,7 @@ export function createApp(bindings = {}) {
                 includeAutoSelect
             );
             builder.setSubscriptionUrl(c.req.url);
+            builder.setUpdateInterval(c.req.query('interval'));
             await builder.build();
 
             const userinfo = builder.getSubscriptionUserinfo();
